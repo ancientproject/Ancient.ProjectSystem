@@ -1,0 +1,23 @@
+{
+    "id": "ExamplePackage",
+    "version": "1.0.0-beta.4",
+
+    "title": "Super package",
+    "description": "Omae wa mou shindeiru",
+
+    "type": "source",
+    "owner": "me@google.li",
+    "files": [
+        "#/lib/terminal.dll"
+    ],
+    "iconUrl": "https://goo.gl/not-your-image.png",
+    "repository": {
+        "type": "git",
+        "url": "https://kukareku.com/you.git"
+    },
+    "license": "MIT",
+    "deps": {
+        "magic": "+1.4.48-beta.1",
+        "klw": "+42.551-r.1"
+    }
+}
