@@ -1,0 +1,39 @@
+{
+  "name": "@rune-temp/spec",
+  "version": "0.2.2",
+  "description": "A nuget specification file parser",
+  "main": "./dist/index.js",
+  "repository": "https://github.com/ancientproject/rune-spec.git",
+  "author": "Yuuki Wesp <ls-micro@ya.ru>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@types/semver": "^7.1.0",
+    "@types/webpack": "^4.41.10",
+    "ava": "^3.6.0",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-macros": "^2.8.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "declaration-bundler-webpack-plugin": "^1.0.3",
+    "source-map-support": "^0.5.16",
+    "ts-loader": "^6.2.2",
+    "ts-nameof.macro": "^4.2.1",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "scripts": {
+    "build": "webpack",
+    "dev:watch": "webpack --progress --colors --watch",
+    "generate-class": "xscgen ./nuspec.xsd",
+    "deploy": "yarn publish --access public"
+  },
+  "private": false,
+  "dependencies": {
+    "semver": "^7.2.2"
+  }
+}
