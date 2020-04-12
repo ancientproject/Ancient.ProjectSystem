@@ -1,14 +1,23 @@
 {
   "name": "@rune-temp/spec",
-  "version": "0.2.2",
-  "description": "A nuget specification file parser",
+  "version": "0.2.17",
+  "description": "A rune specification file parser",
   "main": "./dist/index.js",
   "repository": "https://github.com/ancientproject/rune-spec.git",
   "author": "Yuuki Wesp <ls-micro@ya.ru>",
   "license": "MIT",
   "devDependencies": {
+    "@ava/babel": "^1.0.1",
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.9.0",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/plugin-transform-typescript": "^7.9.4",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-typescript": "^7.9.0",
+    "@babel/register": "^7.9.0",
     "@types/jszip": "^3.1.7",
     "@types/semver": "^7.1.0",
     "@types/webpack": "^4.41.10",
@@ -21,6 +30,7 @@
     "copy-webpack-plugin": "^5.1.1",
     "declaration-bundler-webpack-plugin": "^1.0.3",
     "source-map-support": "^0.5.16",
+    "tap-nyan": "^1.1.0",
     "ts-loader": "^6.2.2",
     "ts-nameof.macro": "^4.2.1",
     "typescript": "^3.8.3",
@@ -30,12 +40,25 @@
   "scripts": {
     "build": "webpack",
     "dev:watch": "webpack --progress --colors --watch",
-    "generate-class": "xscgen ./nuspec.xsd",
-    "deploy": "yarn publish --access public"
+    "deploy": "yarn build && yarn publish --access public",
+    "test": "npx ava --tap | npx tap-nyan",
+    "test:raw": "npx ava"
   },
   "private": false,
   "dependencies": {
     "jszip": "^3.3.0",
     "semver": "^7.2.2"
+  },
+  "ava": {
+    "files": [
+      "test/**/*.js"
+    ],
+    "require": [
+      "@babel/register"
+    ],
+    "testOptions": {
+      "babelrc": false,
+      "configFile": false
+    }
   }
 }
