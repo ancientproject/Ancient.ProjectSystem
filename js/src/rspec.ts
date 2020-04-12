@@ -1,15 +1,10 @@
-import { required, freeze, sealed } from "./annotanations";
-import semver, { SemVer } from "semver";
+import { SemVer } from "semver";
 export type License = 
     "MIT" | "GNU AGPLv3" | "GNU GPLv3" | "GNU LGPLv3" | "Mozilla Public 2.0" | "Apache 2.0" | "Boost 1.0" | "ISC" | "Unlicense";
 
-@freeze
-@sealed
 export class RuneSpec
 {
-    @required
     public id: string;
-    @required
     public version: SemVer;
     public type: "binary" | "source";
     public owner: string;
@@ -25,12 +20,14 @@ export class RuneSpec
 
 export function parse(value: string): RuneSpec {
     const raw = toLowerAll(JSON.parse(value)) as any;
+
     if(!raw.id) throw new Error(`spec#id is required value.`);
     if(!raw.version) throw new Error(`spec#version is required value.`);
     let target: RuneSpec = new RuneSpec();
 
     target.id = raw.id;
-    target.version = semver.parse(raw.version);
+    
+    target.version = new SemVer(raw.version);
 
     target.type = raw.type ?? "binary";
     target.files = raw.files ?? [];
