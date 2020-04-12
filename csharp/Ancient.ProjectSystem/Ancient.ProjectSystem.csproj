@@ -6,7 +6,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Yuuki Wesp</Authors>
-    <Version>0.60.345.19</Version>
+    <Version>0.60.345.20</Version>
     <Company>Ancient Project</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>(C) 2020 Yuuki Wesp</Copyright>
