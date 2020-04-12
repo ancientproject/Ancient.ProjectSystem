@@ -1,6 +1,32 @@
 {
     "presets": [
-        "env",
-        "macros"
-    ]
-}
+      "@babel/preset-typescript",
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "browsers": [
+              "> 1%",
+              "last 2 versions",
+              "not ie <= 8"
+            ]
+          }
+        }
+      ]
+    ],
+    "plugins": [
+      "@babel/plugin-transform-runtime",
+      "@babel/plugin-transform-typescript"
+    ],
+    "env": {
+      "test": {
+        "presets": [
+          "@babel/env"
+        ],
+        "plugins": [
+          "@babel/plugin-transform-modules-commonjs",
+          "@babel/plugin-transform-typescript"
+        ]
+      }
+    }
+  }
