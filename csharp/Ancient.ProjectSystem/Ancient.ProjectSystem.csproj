@@ -10,10 +10,12 @@
     <Company>Ancient Project</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>(C) 2020 Yuuki Wesp</Copyright>
-    <PackageProjectUrl>https://github.com/0xF6/ancient_cpu</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/0xF6/ancient_cpu</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/ancientproject/Ancient.ProjectSystem</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ancientproject/Ancient.ProjectSystem</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageIconUrl>https://raw.githubusercontent.com/0xF6/ancient_cpu/master/Rune/resource/icon.png</PackageIconUrl>
+    <Description>🕯❄️🍱 Collections of classes and structures for project system rune-cli and ancient-vm</Description>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <PropertyGroup Condition="$(Configuration) == 'Debug'">
     <BumpRevision>true</BumpRevision>
