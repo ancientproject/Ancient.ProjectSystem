@@ -1,7 +1,7 @@
 import { parse, RuneSpec } from "./rspec";
-import { RunePackage, Unwrap } from "./RunePackage";
+import { unwrap, RunePackage } from "./RunePackage";
 
-const parseRuneSpec = parse;
-const parseRunePkg = Unwrap;
+const parseSpec = (value: string) => parse(value);
+const parsePkg = (value: ArrayBuffer) => unwrap(value);
 
-export { parseRuneSpec, parseRunePkg, RuneSpec, RunePackage }
+export { parseSpec, parsePkg, RuneSpec, RunePackage }
