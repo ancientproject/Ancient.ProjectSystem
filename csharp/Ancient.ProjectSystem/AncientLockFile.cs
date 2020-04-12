@@ -21,7 +21,7 @@
 
         public string id { get; set; }
         public string registry { get; set; }
-        public NuGetVersion version { get; set; }
+        public Version version { get; set; }
         public string platform { get; set; } = "any";
     }
 }
