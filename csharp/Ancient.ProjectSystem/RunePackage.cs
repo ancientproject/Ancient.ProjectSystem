@@ -10,7 +10,7 @@
     using Newtonsoft.Json;
     using NuGet.Versioning;
 
-    public class RunePackage : IDisposable, IAsyncDisposable
+    public class RunePackage : IDisposable, IAsyncDisposable, IExtraction
     {
         public string ID { get; set; }
         public NuGetVersion Version { get; set; }
@@ -21,8 +21,6 @@
             => Content?.Dispose();
         public ValueTask DisposeAsync()
             => Content?.DisposeAsync() ?? new ValueTask(Task.CompletedTask);
-
-
         public static async Task<RunePackage> Unwrap(Stream stream, CancellationToken cancellationToken = default)
         {
             using var zip = new ZipArchive(stream);
@@ -47,6 +45,20 @@
                 Version = spec.Version,
                 Spec = spec
             };
+        }
+
+        async Task IExtraction.ExtractTo(DirectoryInfo directory)
+        {
+            using var zip = new ZipArchive(Content);
+
+            foreach (var entry in zip.Entries)
+            {
+                var path = Path.Combine(directory.FullName, entry.FullName);
+                await using var point = File.OpenWrite(path);
+                await using var entryPoint = entry.Open();
+                await entryPoint.CopyToAsync(point);
+                await point.FlushAsync();
+            }
         }
     }
 }
