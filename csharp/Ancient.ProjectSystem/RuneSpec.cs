@@ -1,8 +1,6 @@
 ﻿namespace Ancient.ProjectSystem
 {
     using System.Collections.Generic;
-    using System.IO;
-    using System.Threading.Tasks;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
     using NuGet.Versioning;
@@ -12,6 +10,7 @@
         [JsonProperty("id")]
         public string ID { get; set; }
         [JsonProperty("version")]
+        [JsonConverter(typeof(NuGetVersionConverter))]
         public NuGetVersion Version { get; set; }
         [JsonProperty("type")]
         [JsonConverter(typeof(StringEnumConverter))]

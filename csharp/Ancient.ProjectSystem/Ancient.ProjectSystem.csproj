@@ -5,7 +5,7 @@
     <LangVersion>8</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Yuuki Wesp</Authors>
-    <Version>0.60.348.20</Version>
+    <Version>0.60.351.20</Version>
     <Company>Ancient Project</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>(C) 2020 Yuuki Wesp</Copyright>
