@@ -10,7 +10,7 @@
     using Newtonsoft.Json;
     using NuGet.Versioning;
 
-    public class RunePackage : IDisposable, IAsyncDisposable, IExtraction
+    public class RunePackage : IDisposable, IAsyncDisposable
     {
         public string ID { get; set; }
         public NuGetVersion Version { get; set; }
@@ -21,9 +21,12 @@
             => Content?.Dispose();
         public ValueTask DisposeAsync()
             => Content?.DisposeAsync() ?? new ValueTask(Task.CompletedTask);
-        public static async Task<RunePackage> Unwrap(Stream stream, CancellationToken cancellationToken = default)
+
+        public static async Task<RunePackage> Unwrap(byte[] buffer, CancellationToken cancellationToken = default)
         {
-            using var zip = new ZipArchive(stream);
+            await using var mem = new MemoryStream(buffer);
+            using var zip = new ZipArchive(mem, ZipArchiveMode.Read);
+
             var entity = zip.GetEntry("target.rspec");
 
             if (entity is null)
@@ -35,30 +38,14 @@
             var result = Encoding.UTF8.GetString(memory.ToArray());
 
             var spec = JsonConvert.DeserializeObject<RuneSpec>(result);
-            var content = new MemoryStream();
-            await stream.CopyToAsync(content, cancellationToken);
 
             return new RunePackage
             {
-                Content = content,
+                Content = new MemoryStream(buffer),
                 ID = spec.ID,
                 Version = spec.Version,
                 Spec = spec
             };
-        }
-
-        async Task IExtraction.ExtractTo(DirectoryInfo directory)
-        {
-            using var zip = new ZipArchive(Content);
-
-            foreach (var entry in zip.Entries)
-            {
-                var path = Path.Combine(directory.FullName, entry.FullName);
-                await using var point = File.OpenWrite(path);
-                await using var entryPoint = entry.Open();
-                await entryPoint.CopyToAsync(point);
-                await point.FlushAsync();
-            }
         }
     }
 }
