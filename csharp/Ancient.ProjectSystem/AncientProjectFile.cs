@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using Newtonsoft.Json;
+    using NuGet.Versioning;
 
     public class AncientProjectFile
     {
@@ -47,14 +49,22 @@
         public Dictionary<string, string> deps => project.deps ?? new Dictionary<string, string>();
 
         public Dictionary<string, string> scripts => project.scripts ?? new Dictionary<string, string>();
-
+        
         private readonly FileInfo projectRef;
         private readonly AncientProjectFile project;
 
-        public AncientProject(FileInfo file)
+        public AncientProject([DisallowNull] FileInfo file)
         {
-            projectRef = file;
+            projectRef = file ?? throw new ArgumentNullException(nameof(file));
             project = AncientProjectFile.Open(projectRef);
+        }
+
+
+        public RuneSpec OpenSpec()
+        {
+            var info = new DirectoryInfo(projectRef.DirectoryName);
+            var json = info.GetFiles("*.rspec.json");
+            return JsonConvert.DeserializeObject<RuneSpec>(File.ReadAllText(json.First().FullName));
         }
 
 
@@ -106,8 +116,6 @@
             File.WriteAllText(projectRef.FullName, JsonConvert.SerializeObject(project));
             return this;
         }
-
-
         public static AncientProject FromLocal()
         {
             var dir = Directory.GetCurrentDirectory();
@@ -132,11 +140,11 @@
         public static DepVersion From(string version, bool withoutKind = false) => new DepVersion(version, withoutKind);
 
         public bool IsUpgrade(string anotherVersion) 
-            => new Version(version) < new Version(anotherVersion);
+            => new NuGetVersion(version) < new NuGetVersion(anotherVersion);
         public bool IsDowngrade(string anotherVersion) 
-            => new Version(version) > new Version(anotherVersion);
+            => new NuGetVersion(version) > new NuGetVersion(anotherVersion);
         public bool IsCurrent(string anotherVersion) 
-            => new Version(version) == new Version(anotherVersion);
+            => new NuGetVersion(version) == new NuGetVersion(anotherVersion);
 
         private DepVersionKind getKind(ref string ver)
         {
@@ -175,6 +183,8 @@
         }
 
         public override string ToString() => $"{getKindChar(kind)}{version}";
+
+        public NuGetVersion ToNuGetVersion() => new NuGetVersion(this.version);
     }
 
 

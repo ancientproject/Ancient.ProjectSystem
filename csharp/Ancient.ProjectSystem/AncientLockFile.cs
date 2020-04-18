@@ -1,22 +1,19 @@
 ﻿namespace Ancient.ProjectSystem
 {
-    using System;
-    using System.IO;
-    using System.Reflection;
+    using Newtonsoft.Json;
+    using NuGet.Versioning;
 
     public class AncientLockFile
     {
         public AncientLockFile() {}
-        public AncientLockFile(Assembly asm, string Registry)
+        public AncientLockFile(RuneSpec spec)
         {
-            id = Path.GetFileNameWithoutExtension(asm.GetName().Name);
-            registry = Registry;
-            version = asm.GetName().Version;
+            id = spec.ID;
+            version = spec.Version;
         }
-
+        [JsonProperty("id")]
         public string id { get; set; }
-        public string registry { get; set; }
-        public Version version { get; set; }
-        public string platform { get; set; } = "any";
+        [JsonProperty("version"), JsonConverter(typeof(NuGetVersionConverter))]
+        public NuGetVersion version { get; set; }
     }
 }

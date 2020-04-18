@@ -7,6 +7,7 @@
     using System.Reflection;
     using Newtonsoft.Json;
     using MoreLinq;
+    using NuGet.Versioning;
 
     /// <summary>
     /// (not thread-safe)
@@ -48,18 +49,18 @@
             return UseLock();
         }
 
-        public Indexer SaveDep(Assembly asm, byte[] assemblyBytes, string registry = null)
+        public Indexer SaveDep(Assembly asm, byte[] assemblyBytes, RuneSpec spec)
         {
             var depDir = _path
-                .CreateSubdirectory(Path.GetFileNameWithoutExtension(asm.GetName().Name) ?? $"{asm.GetName().Name}")
-                .CreateSubdirectory($"{asm.GetName().Version.ToString(2)}")
+                .CreateSubdirectory(spec.ID)
+                .CreateSubdirectory($"{spec.Version}")
                 .CreateSubdirectory("any");
 
             File.WriteAllBytes(Path.Combine(depDir.FullName, $"{asm.GetName().Name}.image"), assemblyBytes);
 
             if (useLockFile)
             {
-                lockFile.Add(new AncientLockFile(asm, registry));
+                lockFile.Add(new AncientLockFile(spec));
                 FlushLock();
             }
             return this;
@@ -78,7 +79,7 @@
             return this;
         }
 
-        public Indexer GetVersion(string id, out Version version)
+        public Indexer GetVersion(string id, out NuGetVersion version)
         {
             version = lockFile.First(x => x.id == id).version;
             return this;
